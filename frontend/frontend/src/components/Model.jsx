@@ -18,22 +18,32 @@ function Model({ isOpen, onClose, onConfirm, title = "Confirm Action", children 
   return (
     <dialog ref={dialogRef} className="modal" onCancel={onClose} onClose={onClose}>
       <div className="modal-content">
-        <span className="modal-icon">VOID</span>
+        <button className="modal-close" onClick={onClose} aria-label="Close">
+          ×
+        </button>
+
+        {onConfirm && <span className="modal-icon">!</span>}
+
         <h2>{title}</h2>
+
         <div className="modal-body">{children}</div>
 
-        <div className="modal-buttons">
-          <button className="cancel-btn" onClick={onClose}>Cancel</button>
-          <button
-            className="delete-btn"
-            onClick={() => {
-              onConfirm();
-              onClose();
-            }}
-          >
-           Delete
-          </button>
-        </div>
+        {onConfirm && (
+          <div className="modal-buttons">
+            <button className="cancel-btn" onClick={onClose}>
+              Cancel
+            </button>
+            <button
+              className="delete-btn"
+              onClick={() => {
+                onConfirm();
+                onClose();
+              }}
+            >
+              Delete
+            </button>
+          </div>
+        )}
       </div>
     </dialog>
   );

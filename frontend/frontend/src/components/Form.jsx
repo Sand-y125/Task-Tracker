@@ -21,7 +21,7 @@ function Form({ addTask, updateTask, editingTask }) {
     }
   }, [editingTask]);
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
 
     if (!title.trim() || !description.trim()) {
@@ -31,41 +31,47 @@ function Form({ addTask, updateTask, editingTask }) {
 
     const task = { title, description, priority, completed };
 
-    if (editingTask) {
-      updateTask(editingTask._id, task);
-    } else {
-      addTask(task);
-    }
+    try {
+      if (editingTask) {
+        await updateTask(editingTask._id, task);
+      } else {
+        await addTask(task);
+      }
 
-    setTitle("");
-    setDescription("");
-    setPriority("medium");
-    setCompleted(false);
+      setTitle("");
+      setDescription("");
+      setPriority("medium");
+      setCompleted(false);
+    } catch (error) {
+      console.error("Error saving task:", error);
+    }
   };
 
   return (
     <div className="form-container">
       <h2 className="form-title">
-        {editingTask ? "Amend Work Order" : "New Work Order"}
+        {editingTask ? "Edit Task" : "Add New Task"}
       </h2>
 
       <form onSubmit={submitHandler} className="task-form">
         <div className="form-group">
-          <label>Title</label>
+          <label>Task Title</label>
           <input
             type="text"
-            placeholder="What needs doing..."
+            placeholder="Enter task title..."
             value={title}
             onChange={(e) => setTitle(e.target.value)}
+            required
           />
         </div>
 
         <div className="form-group">
           <label>Description</label>
           <textarea
-            placeholder="Add the details..."
+            placeholder="Enter task description..."
             value={description}
             onChange={(e) => setDescription(e.target.value)}
+            required
           />
         </div>
 
@@ -84,11 +90,11 @@ function Form({ addTask, updateTask, editingTask }) {
             checked={completed}
             onChange={(e) => setCompleted(e.target.checked)}
           />
-          Mark as completed
+          Completed
         </label>
 
-        <button className="submit-btn">
-          {editingTask ? "Update Order" : "File Order"}
+        <button type="submit" className="submit-btn">
+          {editingTask ? "Update Task" : "Add Task"}
         </button>
       </form>
     </div>
