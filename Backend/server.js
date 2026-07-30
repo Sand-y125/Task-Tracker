@@ -17,8 +17,12 @@ app.use('/task', TaskRoutes);
 app.use('/user', UserRoutes);
 app.use('/auth', AuthRoutes);
 
+app.get('/', (req, res) => {
+    res.send('Task Tracker API is running!');
+});
+
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
     console.log(`Express Server is running on port ${PORT}`);
 });
