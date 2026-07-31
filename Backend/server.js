@@ -10,7 +10,10 @@ const TaskRoutes = require('./src/routes/TaskRoutes');
 const UserRoutes = require('./src/routes/UserRoutes');
 const AuthRoutes = require('./src/routes/AuthRoutes');
 
-app.use(cors());
+app.use(cors({
+    origin: 'https://task-tracker-1-6x51.onrender.com'
+}));
+
 app.use(express.json());
 
 app.use('/task', TaskRoutes);
